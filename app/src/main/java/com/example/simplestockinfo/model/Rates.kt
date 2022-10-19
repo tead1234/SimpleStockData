@@ -7,5 +7,5 @@ data class Rates(
     @SerializedName("USD")
     val uSD: Int,
     @SerializedName("WTIOIL")
-    val wTIOIL: Double
+    val WTIOIL: Double
 )

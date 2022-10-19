@@ -26,12 +26,12 @@ object RetrofitInstance {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-    private const val SERVER_URL2 = "https://commodities-api.com/api/latest/"
+    private const val SERVER_URL2 = "https://commodities-api.com/api/"
     // 요청문제만 어떻게 해결하면 될거같은데
     private val retrofit_wti by lazy {
         Retrofit.Builder()
             .baseUrl(SERVER_URL2)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
     fun buildOkHttpClient(): OkHttpClient {

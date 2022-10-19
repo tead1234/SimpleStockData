@@ -14,6 +14,6 @@ interface retrofitApi {
     @GET("exchangeJSON/?authkey=QERYtJ0Txoc4BEdZguQzAKUx5SILTc3l&searchdate=20221004&data=AP01")
 //    suspend fun getData(@Path("authkey") authkey : String, @Path("searchdate") searchdate: String, @Path("data") data : String ) : Response<String>
     suspend fun getDa() : Response<ExchangeInfoX>
-    @GET("/")
-    suspend fun getWTI(@Query("access_key") access_key:String,@Query("base") base:String, @Query("symbols") symbols : String): Call<WTIdata>
+    @GET("latest")
+    fun getWTI(@Query("access_key") access_key:String,@Query("base") base:String, @Query("symbols") symbols : String): Call<WTIdata>
 }

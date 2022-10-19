@@ -32,8 +32,9 @@ class MainActivity : ComponentActivity() {
         viewModel = ViewModelProvider(this,viewModelFactory).get(MainViewModel::class.java)
         setContent {
             SimpleStockInfoTheme {
-                InfoCard(viewModel)
-
+//                InfoCard(viewModel)
+                Spacer(modifier = Modifier.height(100.dp))
+                InfoCard2(mainViewModel= viewModel)
             }
         }
     }
@@ -42,6 +43,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun InfoCard(mainViewModel: MainViewModel){
     val Name = mainViewModel.getData().observeAsState()
+
+
     Name.value?.let { it ->
 
         Row(modifier = Modifier
@@ -57,7 +60,26 @@ fun InfoCard(mainViewModel: MainViewModel){
             Text(text = it.get(1))
         }
     }
+}
+@Composable
+fun InfoCard2(mainViewModel: MainViewModel){
+    val wti = mainViewModel.getWTI().observeAsState()
+    Log.d("WTU", wti.toString())
+    wti.value?.let { it ->
+        Log.d("firstvalue", it.first)
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .background(shape = RoundedCornerShape(6.dp), color = Color.Magenta)
+            .padding(20.dp)
+            .height(40.dp),
+            verticalAlignment = Alignment.CenterVertically
 
+        ) {
+            Text(text = it!!.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
+            Spacer(modifier = Modifier.width(30.dp))
+            Text(text = it.second!!.toString())
+        }
+    }
 }
 //@Composable
 //fun InfoContainer(infodata: List<InfoData>){
