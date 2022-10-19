@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,14 +33,16 @@ class MainActivity : ComponentActivity() {
         viewModel = ViewModelProvider(this,viewModelFactory).get(MainViewModel::class.java)
         setContent {
             SimpleStockInfoTheme {
-//                InfoCard(viewModel)
-                Spacer(modifier = Modifier.height(100.dp))
-                InfoCard2(mainViewModel= viewModel)
+                Column{
+                    InfoCard(viewModel)
+                    Spacer(modifier = Modifier.height(5.dp))
+                    InfoCard2(mainViewModel = viewModel)
+                }
             }
         }
     }
 }
-
+// 이제 나스닥 선물 하고 트윛터만 가져와서 붙이면 완성!!!
 @Composable
 fun InfoCard(mainViewModel: MainViewModel){
     val Name = mainViewModel.getData().observeAsState()
@@ -50,11 +53,12 @@ fun InfoCard(mainViewModel: MainViewModel){
         Row(modifier = Modifier
             .fillMaxWidth()
             .background(shape = RoundedCornerShape(6.dp), color = Color.LightGray)
-            .padding(20.dp)
+            .padding(30.dp)
             .height(40.dp),
             verticalAlignment = Alignment.CenterVertically
 
         ) {
+            Spacer(modifier = Modifier.height(15.dp))
             Text(it.get(0), modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.width(30.dp))
             Text(text = it.get(1))
@@ -70,17 +74,19 @@ fun InfoCard2(mainViewModel: MainViewModel){
         Row(modifier = Modifier
             .fillMaxWidth()
             .background(shape = RoundedCornerShape(6.dp), color = Color.Magenta)
-            .padding(20.dp)
+            .padding(30.dp)
             .height(40.dp),
             verticalAlignment = Alignment.CenterVertically
 
         ) {
             Text(text = it!!.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.width(30.dp))
-            Text(text = it.second!!.toString())
+            var wti =  1 / it.second!!
+            Text(text = String.format("%2f", wti))
         }
     }
 }
+// lazy List로 띄우면 1차 오나성
 //@Composable
 //fun InfoContainer(infodata: List<InfoData>){
 //    LazyColumn(modifier = Modifier.fillMaxSize()){
