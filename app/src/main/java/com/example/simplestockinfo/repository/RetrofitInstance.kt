@@ -34,6 +34,14 @@ object RetrofitInstance {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
+    private const val SERVER_URL3 = "https://api.twitter.com/2/users/"
+    // 요청문제만 어떻게 해결하면 될거같은데
+    private val retrofit_tweet by lazy {
+        Retrofit.Builder()
+            .baseUrl(SERVER_URL3)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
     fun buildOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         if (BuildConfig.DEBUG) {
@@ -47,4 +55,5 @@ object RetrofitInstance {
     }
     val api : retrofitApi by lazy { retrofit.create(retrofitApi::class.java) }
     val api_wti : retrofitApi by lazy { retrofit_wti.create(retrofitApi::class.java) }
+    val api_tweet : retrofitApi by lazy { retrofit_tweet.create(retrofitApi::class.java) }
 }

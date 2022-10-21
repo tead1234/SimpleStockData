@@ -1,23 +1,33 @@
 package com.example.simplestockinfo.repository
 
 import android.content.ContentValues.TAG
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.simplestockinfo.model.ExchangeInfoX
 import com.example.simplestockinfo.model.WTIdata
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 // 일종의 어뎁터같은 느낌 여기서 api 요청을 처리함
 // 여기서 만들어진거로 뷰모델에서 활용
+// 여기서 처리하는게 아니라 useCase를 만들어서 처리하도록 구성해보자 ( tweeter 처리 ))
 class Repository() {
     private val API_KEY = "QERYtJ0Txoc4BEdZguQzAKUx5SILTc3l"
     private val API_KEY_WTI = "cl8xb7l3m8grfdi1w59tfaueom0z26r8al6eiac6qps189m976hxjvt7zsh2"
+    private val API_KEY_TWEETTER = "AAAAAAAAAAAAAAAAAAAAANh4iQEAAAAASdZZtK3AUI8DQPevEfqsThR%2Brro%3DIbaaq0daT9QbhbvEomiRQtHG8O8z0QUJkypsJ0BnT0X0itADxO"
     private var out = MutableLiveData<Pair<String, Double>>()
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun apiGetInfoData(): ExchangeInfoX? {
+        var localdate = LocalDate.now()
+        var Strnow = localdate.format(
+            DateTimeFormatter.ofPattern("yyyyMMdd"))
 //        val response= RetrofitInstance.api.getData(authkey = API_KEY, searchdate = "20221004" ,data="AP01" )
-        val response = RetrofitInstance.api.getDa()
+        val response = RetrofitInstance.api.getDa(API_KEY,Strnow, "AP01")
         return if(response.isSuccessful) response.body() as ExchangeInfoX else null
     }
     fun getWTI() : MutableLiveData<Pair<String, Double>> {
