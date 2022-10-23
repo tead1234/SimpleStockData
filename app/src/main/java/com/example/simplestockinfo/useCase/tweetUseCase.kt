@@ -32,8 +32,6 @@ class tweetUseCase(private var repository: Repository) {
                 Log.d("연결안됨",response.body().toString())
                 response.body().let {
                     if (it != null){
-
-                        Log.d("연결안됨","연결안됨")
                         tweetLivedata.value =
                             Pair<String, List<Data>>(AUTHOR, response.body()!!.data)
                         Log.d("연결안됨",tweetLivedata.value.toString())
@@ -52,7 +50,6 @@ class tweetUseCase(private var repository: Repository) {
 
 
         }
-        Log.d("값", tweetLivedata.value.toString())
         return tweetLivedata
     }
 }

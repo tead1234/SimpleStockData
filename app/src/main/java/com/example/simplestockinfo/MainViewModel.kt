@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.simplestockinfo.model.tweetdata.Data
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.useCase.tweetUseCase
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.function.DoubleToLongFunction
 
@@ -19,14 +20,18 @@ class MainViewModel (private val repository: Repository):ViewModel() {
     val output: MutableLiveData<ArrayList<String>> = MutableLiveData()
     lateinit var tweetUseCase: tweetUseCase
     lateinit var wti_output  :  MutableLiveData<Pair<String,Double>>
+    var tweetLivedata = MutableLiveData<Pair<String,List<Data>>>()
     @RequiresApi(Build.VERSION_CODES.O)
     fun getData(): MutableLiveData<ArrayList<String>> {
         viewModelScope.launch {
             repository.apiGetInfoData()?.apply {
-//                output.value = arrayListOf(this.get(22).curNm, this.get(22).kftcDealBasR)
+                if (output.value != null)
+                output.value = arrayListOf(this.get(22).curNm, this.get(22).kftcDealBasR)
+                Log.d("TAG",output.value.toString())
             }
 
         }
+        Log.d("TAG",output.value.toString())
         return output
     }
 
@@ -38,10 +43,12 @@ class MainViewModel (private val repository: Repository):ViewModel() {
         }
         return wti_output
     }
-    suspend fun getTweet(): MutableLiveData<Pair<String, List<Data>>> {
+     fun getTweet(): MutableLiveData<Pair<String, List<Data>>> {
             tweetUseCase = tweetUseCase(repository)
-            var tweetLivedata = tweetUseCase.getTweetTimeLine()
-            Log.d("TAT", tweetLivedata.value.toString())
+            viewModelScope.launch {
+            tweetLivedata.value = tweetUseCase.getTweetTimeLine().value
+            }
+         Log.d("DAD2",tweetLivedata.value?.second.toString())
             return tweetLivedata
     }
 
