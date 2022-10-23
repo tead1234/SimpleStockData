@@ -23,7 +23,7 @@ class MainViewModel (private val repository: Repository):ViewModel() {
     fun getData(): MutableLiveData<ArrayList<String>> {
         viewModelScope.launch {
             repository.apiGetInfoData()?.apply {
-                output.value = arrayListOf(this.get(22).curNm, this.get(22).kftcDealBasR)
+//                output.value = arrayListOf(this.get(22).curNm, this.get(22).kftcDealBasR)
             }
 
         }
@@ -35,22 +35,13 @@ class MainViewModel (private val repository: Repository):ViewModel() {
             wti_output = MutableLiveData()
             Log.d("TAG",repository.getWTI().toString())
             wti_output = repository.getWTI()
-
-//            repository.getWTI().run {
-//                if (this.isEmpty()){
-//                    Log.d("DDD", "비어있음")
-//                }
-//                var fi = this.get(0)
-//                wti_output = MutableLiveData()
-//                wti_output.value = fi
-//
-//            }
         }
         return wti_output
     }
-    fun getTweet(): MutableLiveData<Pair<String, List<Data>>> {
+    suspend fun getTweet(): MutableLiveData<Pair<String, List<Data>>> {
             tweetUseCase = tweetUseCase(repository)
-            var tweetLivedata = tweetUseCase.getTweetTimeLine(381696140)
+            var tweetLivedata = tweetUseCase.getTweetTimeLine()
+            Log.d("TAT", tweetLivedata.value.toString())
             return tweetLivedata
     }
 

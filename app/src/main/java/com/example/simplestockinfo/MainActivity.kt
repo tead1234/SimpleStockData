@@ -1,9 +1,11 @@
 package com.example.simplestockinfo
 // view를 만들어야 하기에 각 정보별 틀을 여기서 만들어야 됨
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,30 +21,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.simplestockinfo.model.tweetdata.Data
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.ui.theme.MainViewModelFactory
 import com.example.simplestockinfo.ui.theme.SimpleStockInfoTheme
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+
 class MainActivity : ComponentActivity() {
     lateinit var viewModel: MainViewModel
     lateinit var viewModelFactory: MainViewModelFactory
     private var repository = Repository()
     private var Name = mutableListOf<String>()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(MainViewModel::class.java)
+        var a : String
+        var b : List<Data>
+        MainScope().launch {
+            a = viewModel.getTweet().value.toString()
+            Log.d("ㅆㅁㅆ", a.toString())
+        }
+
+
         setContent {
             SimpleStockInfoTheme {
                 Column{
                     InfoCard(viewModel)
                     Spacer(modifier = Modifier.height(5.dp))
-                    InfoCard2(mainViewModel = viewModel)
+//                    InfoCard2(mainViewModel = viewModel)
                 }
             }
         }
     }
 }
 // 이제 나스닥 선물 하고 트윛터만 가져와서 붙이면 완성!!!
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun InfoCard(mainViewModel: MainViewModel){
     val Name = mainViewModel.getData().observeAsState()

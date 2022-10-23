@@ -29,10 +29,13 @@ interface retrofitApi {
 
 
 
-    @GET("{id}/tweets")
-    fun getTweetTimeLine(
-        @HeaderMap headers2 : Map<String, String>,
-        @Path("id") id: Int,
+    @Headers(
+        "Authorization: Bearer AAAAAAAAAAAAAAAAAAAAANh4iQEAAAAAHoKYK2DiRxuP4mYUa1G1hCROGwQ%3DlfIB4c5FZ5TMK0XJ8HcdLt5hZD5GmeEeVm51MhRJdluhNg6kOS",
+        "Content-Type: application/json"
+    )
+    @GET("381696140/tweets")
+    suspend fun getTweetTimeLine(
+//        @Path("id") id: Int,
         @Query("max_results") max_results: Int
     ): Response<tweetTimeLine>
 }
