@@ -24,8 +24,8 @@ class MainViewModel (private val repository: Repository):ViewModel() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun getData(): MutableLiveData<ArrayList<String>> {
         viewModelScope.launch {
-            repository.apiGetInfoData()?.apply {
-                if (output.value != null)
+            repository.apiGetInfoData()?.run {
+
                 output.value = arrayListOf(this.get(22).curNm, this.get(22).kftcDealBasR)
                 Log.d("TAG",output.value.toString())
             }

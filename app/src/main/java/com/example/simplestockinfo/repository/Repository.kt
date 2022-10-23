@@ -1,8 +1,10 @@
 package com.example.simplestockinfo.repository
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.simplestockinfo.model.ExchangeInfoX
@@ -27,7 +29,7 @@ class Repository() {
         var Strnow = localdate.format(
             DateTimeFormatter.ofPattern("yyyyMMdd"))
 //        val response= RetrofitInstance.api.getData(authkey = API_KEY, searchdate = "20221004" ,data="AP01" )
-        val response = RetrofitInstance.api.getDa(API_KEY,Strnow, "AP01")
+        val response = RetrofitInstance.api.getDa(API_KEY,"20221019", "AP01")
         return if(response.isSuccessful) response.body() as ExchangeInfoX else null
     }
     fun getWTI() : MutableLiveData<Pair<String, Double>> {
@@ -50,13 +52,16 @@ class Repository() {
                 // 아예 mutable Livedata로 보내주면 안되나??
                 // api 데이터에서 필요한 애들만 리스트에 담아서 보내기
 
-                response.body()?.let{
-
-                    var wtidata = Pair<String, Double>(it.data.base, it.data.rates.WTIOIL)
-                    Log.d("기름밧",wtidata.toString())
-                    out.value = wtidata
+                response.body()?.let {
+                    if (it.data == null) {
+                        Log.d("TAG", "null이야")
+                        out.value = Pair<String, Double>("없어", 12.31312)
+                    } else {
+                        var wtidata = Pair<String, Double>("wti",0.0091)
+                        Log.d("기름밧", wtidata.toString())
+                        out.value = wtidata
+                    }
                 }
-
             }
 
         })

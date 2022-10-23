@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                 Column{
                     InfoCard(viewModel)
                     Spacer(modifier = Modifier.height(5.dp))
-//                    InfoCard2(mainViewModel = viewModel)
+                    InfoCard2(mainViewModel = viewModel)
                     Conversation(mainViewModel = viewModel)
 
                 }
@@ -65,8 +65,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun InfoCard(mainViewModel: MainViewModel){
     val Name by mainViewModel.getData().observeAsState()
-
-
+    Log.d("TAG", Name.toString())
     Name?.let { it ->
 
         Row(modifier = Modifier
@@ -86,10 +85,8 @@ fun InfoCard(mainViewModel: MainViewModel){
 }
 @Composable
 fun InfoCard2(mainViewModel: MainViewModel){
-    val wti = mainViewModel.getWTI().observeAsState()
-    Log.d("WTU", wti.toString())
-    wti.value?.let { it ->
-        Log.d("firstvalue", it.first)
+    val wti by mainViewModel.getWTI().observeAsState()
+    wti?.let { it ->
         Row(modifier = Modifier
             .fillMaxWidth()
             .background(shape = RoundedCornerShape(6.dp), color = Color.Magenta)
@@ -98,7 +95,7 @@ fun InfoCard2(mainViewModel: MainViewModel){
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            Text(text = it!!.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
+            Text(text = it.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.width(30.dp))
             var wti =  1 / it.second!!
             Text(text = String.format("%2f", wti))
@@ -143,7 +140,7 @@ fun Conversation(mainViewModel: MainViewModel) {
         var messages = it.second
         LazyColumn(modifier = Modifier
             .verticalScroll(listState)
-            .height(150.dp)) {
+            .height(500.dp)) {
             items(messages) { message ->
                 MessageCard(author, message)
             }
