@@ -104,24 +104,31 @@ fun InfoCard2(mainViewModel: MainViewModel){
 }
 @Composable
 fun MessageCard(author: String, data: Data) {
-        Row(modifier = Modifier.padding(all = 8.dp)) {
+        Row(modifier = Modifier.padding(all = 8.dp)
 
-            Column() {
-                Text(
-                    text = author,
+        ) {
+            Surface(
+                shadowElevation = 1.dp,
+            ) {
+                Column() {
 
-                )
+                    Text(
+                        text = author,
+//                    MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
             }
-
             Spacer(modifier = Modifier.height(4.dp))
 
             Surface(
-
+                shadowElevation = 1.dp,
             ) {
                 Text(
                     text = data.text,
                     modifier = Modifier.padding(all = 4.dp),
-
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black
                 )
             }
         }

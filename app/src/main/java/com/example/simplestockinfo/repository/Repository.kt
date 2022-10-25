@@ -29,7 +29,7 @@ class Repository() {
         var Strnow = localdate.format(
             DateTimeFormatter.ofPattern("yyyyMMdd"))
 //        val response= RetrofitInstance.api.getData(authkey = API_KEY, searchdate = "20221004" ,data="AP01" )
-        val response = RetrofitInstance.api.getDa(API_KEY,"20221019", "AP01")
+        val response = RetrofitInstance.api.getDa(API_KEY,Strnow, "AP01")
         return if(response.isSuccessful) response.body() as ExchangeInfoX else null
     }
     fun getWTI() : MutableLiveData<Pair<String, Double>> {
