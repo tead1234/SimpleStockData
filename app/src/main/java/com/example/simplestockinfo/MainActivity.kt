@@ -26,41 +26,65 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.example.simplestockinfo.Fragmant.ScreenSlidePageFragment
 import com.example.simplestockinfo.model.tweetdata.Data
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.ui.theme.MainViewModelFactory
 import com.example.simplestockinfo.ui.theme.SimpleStockInfoTheme
 import kotlinx.coroutines.*
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity(){
     lateinit var viewModel: MainViewModel
     lateinit var viewModelFactory: MainViewModelFactory
     private var repository = Repository()
     private var Name = mutableListOf<String>()
+    private lateinit var viewPager: ViewPager2
     @SuppressLint("CoroutineCreationDuringComposition")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModelFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(MainViewModel::class.java)
-        setContent {
-            SimpleStockInfoTheme {
-                Column{
-                    InfoCard(viewModel)
-                    Spacer(modifier = Modifier.height(5.dp))
-                    InfoCard2(mainViewModel = viewModel)
-                    Conversation(mainViewModel = viewModel)
+        setContentView(R.layout.slide_fragment);
+        viewPager = findViewById(R.id.pager)
 
-                }
-                }
-            }
+        val pagerAdapter = ScreenSlidePagerAdapter(this)
+        viewPager.adapter = pagerAdapter
+    //        setContent {
+//            SimpleStockInfoTheme {
+//                Column{
+//                    InfoCard(viewModel)
+//                    Spacer(modifier = Modifier.height(5.dp))
+//                    InfoCard2(mainViewModel = viewModel)
+//                    Conversation(mainViewModel = viewModel)
+//
+//                }
+//                }
+//            }
 
+    }
+    private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment = ScreenSlidePageFragment()
     }
 }
 // 이제 나스닥 선물 하고 트윛터만 가져와서 붙이면 완성!!!
+// news compasable
+@Composable
+fun NewsInfoCard(mainViewModel: MainViewModel) {
+    val News by mainViewModel.getNewsData().observeAsState();
+}
+
+
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun InfoCard(mainViewModel: MainViewModel){

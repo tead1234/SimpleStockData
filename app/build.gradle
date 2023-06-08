@@ -48,6 +48,8 @@ android {
 dependencies {
     // define a BOM and its version
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    //pager2
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
     // define any required OkHttp artifacts without version
     implementation("com.squareup.okhttp3:okhttp")
