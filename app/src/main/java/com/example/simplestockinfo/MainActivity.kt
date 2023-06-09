@@ -54,7 +54,6 @@ class MainActivity : FragmentActivity(){
         viewModel = ViewModelProvider(this,viewModelFactory).get(MainViewModel::class.java)
         setContentView(R.layout.slide_fragment);
         viewPager = findViewById(R.id.pager)
-
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
     //        setContent {
