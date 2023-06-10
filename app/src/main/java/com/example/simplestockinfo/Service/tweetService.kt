@@ -1,18 +1,14 @@
-package com.example.simplestockinfo.useCase
+package com.example.simplestockinfo.Service
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.example.simplestockinfo.model.tweetdata.Data
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.repository.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
-class tweetUseCase(private var repository: Repository) {
+class tweetService(private var  repository: Repository) {
     suspend fun getTweetTimeLine(): MutableLiveData<Pair<String, List<Data>>> {
 //        var items = HashMap<String, String>()
         var tweetLivedata = MutableLiveData<Pair<String, List<Data>>>()
