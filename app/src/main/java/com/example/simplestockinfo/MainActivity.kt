@@ -60,6 +60,13 @@ class MainActivity : ComponentActivity() {
 
     }
 }
+//news composable
+@Composable
+fun InfoNews(mainViewModel: MainViewModel){
+
+}
+
+
 // 이제 나스닥 선물 하고 트윛터만 가져와서 붙이면 완성!!!
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
