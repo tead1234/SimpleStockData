@@ -34,6 +34,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simplestockinfo.Fragmant.ScreenSlidePageFragment
+import com.example.simplestockinfo.Fragmant.StockListFragment
 import com.example.simplestockinfo.model.tweetdata.Data
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.ui.theme.MainViewModelFactory
@@ -72,7 +73,14 @@ class MainActivity : FragmentActivity(){
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = 2
 
-        override fun createFragment(position: Int): Fragment = ScreenSlidePageFragment()
+        override fun createFragment(position: Int): Fragment {
+          return when(position){
+              0 -> ScreenSlidePageFragment()
+              1 -> StockListFragment()
+
+              else -> {Fragment()}
+          }
+        }
     }
 }
 // 이제 나스닥 선물 하고 트윛터만 가져와서 붙이면 완성!!!

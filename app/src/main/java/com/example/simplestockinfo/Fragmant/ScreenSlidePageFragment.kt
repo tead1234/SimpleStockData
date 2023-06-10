@@ -10,13 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +36,7 @@ import com.example.simplestockinfo.MainViewModel
 import com.example.simplestockinfo.R
 import com.example.simplestockinfo.databinding.ScreenSlidePageBinding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.RectangleShape
 import com.example.simplestockinfo.ui.theme.SimpleStockInfoTheme
 import androidx.lifecycle.ViewModelProvider
 import com.example.simplestockinfo.repository.Repository
@@ -78,10 +82,11 @@ fun InfoCard(mainViewModel: MainViewModel){
     Name?.let { it ->
         SimpleStockInfoTheme{
             Row(modifier = Modifier
-                .fillMaxWidth()
-                .background(shape = RoundedCornerShape(6.dp), color = Color.LightGray)
+                .wrapContentWidth()
+                .background(shape = RoundedCornerShape(10.dp), color = Color.White)
+                .border(5.dp, color = Color.Blue,RectangleShape)
                 .padding(30.dp)
-                .height(40.dp),
+                .fillMaxHeight(0.5f),
                 verticalAlignment = Alignment.CenterVertically
 
             ) {
