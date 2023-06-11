@@ -22,11 +22,14 @@ class MainViewModel (private val repository: Repository):ViewModel() {
     lateinit var wti_output  :  MutableLiveData<Pair<String,Double>>
     var tweetLivedata = MutableLiveData<Pair<String,List<Data>>>()
     @RequiresApi(Build.VERSION_CODES.O)
+    /// 환율
     fun getData(): MutableLiveData<ArrayList<String>> {
         viewModelScope.launch {
             repository.apiGetInfoData()?.run {
-
-                output.value = arrayListOf(this.get(22).curNm, this.get(22).kftcDealBasR)
+                if(this.isEmpty()){
+                    return@run
+                }
+                output.value = arrayListOf(this.get(21).curNm, this.get(21).kftcDealBasR)
                 Log.d("TAG",output.value.toString())
             }
 
