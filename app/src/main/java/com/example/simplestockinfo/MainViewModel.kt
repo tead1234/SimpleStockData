@@ -29,7 +29,7 @@ class MainViewModel (private val repository: Repository):ViewModel() {
                 if(this.isEmpty()){
                     return@run
                 }
-                output.value = arrayListOf(this.get(21).curNm, this.get(21).kftcDealBasR)
+                output.value = arrayListOf(this.get(22).curNm, this.get(22).kftcDealBasR)
                 Log.d("TAG",output.value.toString())
             }
 

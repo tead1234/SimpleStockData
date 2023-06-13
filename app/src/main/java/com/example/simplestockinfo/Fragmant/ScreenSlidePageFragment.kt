@@ -1,5 +1,6 @@
 package com.example.simplestockinfo.Fragmant
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.databinding.DataBindingUtil
@@ -46,6 +49,7 @@ import com.example.simplestockinfo.ui.theme.SimpleStockInfoTheme
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.rememberWebViewState
+import org.intellij.lang.annotations.PrintFormat
 
 private val webViewClient = AccompanistWebViewClient()
 private val webChromeClient = AccompanistWebChromeClient()
@@ -69,8 +73,12 @@ class ScreenSlidePageFragment : Fragment() {
               setContent {
                   Column(modifier = Modifier
                       .fillMaxWidth()
-                      .fillMaxHeight(0.3f)) {
+                      .fillMaxHeight(0.3f)) 
+                  {
                       WebViewComposable()
+                      InfoCard(viewModel)
+                      InfoCard2(mainViewModel = viewModel)
+                      Conversation(mainViewModel = viewModel)
                   }
                 Column(modifier = Modifier
                     .fillMaxWidth()
@@ -78,10 +86,6 @@ class ScreenSlidePageFragment : Fragment() {
                     .border(5.dp, color = Color.Cyan, RoundedCornerShape(16.dp))
                     .fillMaxHeight(0.4f))
                 {
-
-
-                    InfoCard(viewModel)
-                    InfoCard2(mainViewModel = viewModel)
 
                 }
 
@@ -94,6 +98,7 @@ class ScreenSlidePageFragment : Fragment() {
     }
 //
 }
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewComposable() {
 
@@ -120,8 +125,8 @@ fun InfoCard(mainViewModel: MainViewModel){
         SimpleStockInfoTheme{
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .background(shape = RoundedCornerShape(10.dp), color = Color.Blue)
-                .border(5.dp, color = Color.Blue, RoundedCornerShape(16.dp))
+                .background(shape = RoundedCornerShape(10.dp), color = Color.White)
+                .border(2.dp, color = Color.LightGray, RoundedCornerShape(16.dp))
                 .padding(30.dp)
                 .wrapContentHeight(),
                 verticalAlignment = Alignment.CenterVertically
@@ -158,6 +163,40 @@ fun InfoCard2(mainViewModel: MainViewModel){
 }
 
 @Composable
+fun MessageCard(author: String, data: Data) {
+    Row(modifier = Modifier
+        .padding(all = 8.dp)
+        .background(color = Color(51,255,255))
+        .border(2.dp, color = Color(51,255,255), RoundedCornerShape(16.dp))
+    ) {
+        Surface(
+            shadowElevation = 1.dp,
+        ) {
+            Column() {
+
+                Text(
+                    text = author,
+//                    MaterialTheme.typography.titleMedium,
+                    color = Color.Black
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Surface(
+            shadowElevation = 1.dp,
+        ) {
+            Text(
+                text = data.text,
+                modifier = Modifier.padding(all = 4.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black
+            )
+        }
+    }
+}
+
+@Composable
 fun Conversation(mainViewModel: MainViewModel) {
 
 
@@ -168,15 +207,20 @@ fun Conversation(mainViewModel: MainViewModel) {
 
         var author = it.first
         var messages = it.second
-        LazyColumn(modifier = Modifier
-            .verticalScroll(listState)
-            .height(500.dp)) {
-            items(messages) { message ->
-                MessageCard(author, message)
+        Box(modifier = Modifier.height(200.dp)){
+            Column(modifier = Modifier
+                .verticalScroll(listState))
+                 {
+                messages.forEach {message ->
+                    MessageCard(author = author, data = message)
+                }
+
             }
+
+        }
         }
 
-    }
+}
 // 여기서 요청받은 애의 이름과 데이터를 뽑아서 바인딩
 
-}
+
