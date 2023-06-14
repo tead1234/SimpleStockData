@@ -20,8 +20,8 @@ object PlaceholderContent {
      * A map of sample (placeholder) items, by ID.
      */
     val ITEM_MAP: MutableMap<String, PlaceholderItem> = HashMap()
-
-    private val COUNT = 25
+    // 최대 목록 10개
+    private val COUNT = 10
 
     init {
         // Add some sample items.
