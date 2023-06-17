@@ -1,13 +1,11 @@
-package com.example.simplestockinfo.Fragmant
+package com.example.simplestockinfo.fragmant
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.simplestockinfo.R
 
-import com.example.simplestockinfo.Fragmant.placeholder.PlaceholderContent.PlaceholderItem
+import com.example.simplestockinfo.fragmant.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.simplestockinfo.databinding.FragmentStockListBinding
 
 /**

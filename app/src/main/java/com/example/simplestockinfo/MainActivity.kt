@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,21 +21,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.simplestockinfo.Fragmant.ScreenSlidePageFragment
-import com.example.simplestockinfo.Fragmant.StockListFragment
+import com.example.simplestockinfo.fragmant.MainScreenFragment
+import com.example.simplestockinfo.fragmant.ScreenSlidePageFragment
+import com.example.simplestockinfo.fragmant.StockListFragment
 import com.example.simplestockinfo.model.tweetdata.Data
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.ui.theme.MainViewModelFactory
-import com.example.simplestockinfo.ui.theme.SimpleStockInfoTheme
 import kotlinx.coroutines.*
 
 class MainActivity : FragmentActivity(){
@@ -71,12 +65,13 @@ class MainActivity : FragmentActivity(){
 
     }
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-        override fun getItemCount(): Int = 2
+        override fun getItemCount(): Int = 3
 
         override fun createFragment(position: Int): Fragment {
           return when(position){
-              0 -> ScreenSlidePageFragment()
-              1 -> StockListFragment()
+              0 -> MainScreenFragment()
+              1 -> ScreenSlidePageFragment()
+              2 -> StockListFragment()
 
               else -> {Fragment()}
           }

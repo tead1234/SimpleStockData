@@ -1,4 +1,4 @@
-package com.example.simplestockinfo.Fragmant
+package com.example.simplestockinfo.fragmant
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.simplestockinfo.R
-import com.example.simplestockinfo.Fragmant.placeholder.PlaceholderContent
+import com.example.simplestockinfo.fragmant.placeholder.PlaceholderContent
 
 /**
  * A fragment representing a list of Items.
