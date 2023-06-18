@@ -1,4 +1,4 @@
-package com.example.simplestockinfo.Fragmant.placeholder
+package com.example.simplestockinfo.fragmant.placeholder
 
 import java.util.ArrayList
 import java.util.HashMap
