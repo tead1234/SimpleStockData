@@ -7,12 +7,12 @@ import androidx.lifecycle.*
 import com.example.simplestockinfo.Service.newsService
 import com.example.simplestockinfo.model.tweetdata.Data
 import com.example.simplestockinfo.repository.Repository
-import com.example.simplestockinfo.Service.tweetService
+import com.example.simplestockinfo.Service.TweetService
+import com.example.simplestockinfo.model.tweetdata.TweetTimeLine
 import com.example.simplestockinfo.repository.NewsRepository
 import com.example.simplestockinfo.repository.SocketRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 // factory pattern 으로 usecase를 양산화 시킬것
@@ -22,7 +22,7 @@ class MainViewModel(
 ) : ViewModel() {
     // ui에 들어갈 string을 저장할 리스트를 하나 만듬
     val output: MutableLiveData<ArrayList<String>> = MutableLiveData()
-    lateinit var tweetService: tweetService
+    var tweetService: TweetService = TweetService(repository = repository)
     lateinit var newsService: newsService
     lateinit var wti_output: MutableLiveData<Pair<String, Double>>
     var tweetLivedata = MutableLiveData<Pair<String, List<Data>>>()
@@ -30,6 +30,9 @@ class MainViewModel(
     var wtiData: LiveData<String> = socketRepository.getWtiData().asLiveData()
     var exchangeRateData: LiveData<String> = socketRepository.getExchangeRateData().asLiveData()
     var nasdaqData: LiveData<String> = socketRepository.getNasdaqData().asLiveData()
+
+    private val _tweet: MutableLiveData<TweetTimeLine> = MutableLiveData()
+    val tweet: LiveData<TweetTimeLine> get() = _tweet
 
     private val TAG = "MainViewModel"
 
@@ -60,7 +63,7 @@ class MainViewModel(
     }
 
     fun getTweet(): MutableLiveData<Pair<String, List<Data>>> {
-        tweetService = tweetService(repository)
+        tweetService = TweetService(repository)
         viewModelScope.launch {
             tweetLivedata.value = tweetService.getTweetTimeLine().value
         }
@@ -77,6 +80,19 @@ class MainViewModel(
 
     fun sendSocketData() {
         socketRepository.sendMsg()
+    }
+
+    fun getTwit(){
+        viewModelScope.launch {
+            tweetService.getTweet()
+                .catch {
+                    Log.d(TAG, "getTwit: catch")
+                    Log.d(TAG, "getTwit: ${it.toString()}")
+                }.collectLatest {
+                    Log.d(TAG, "getTwit: collect latest")
+                    _tweet.postValue(it)
+                }
+        }
     }
 
 
