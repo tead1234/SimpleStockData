@@ -1,9 +1,7 @@
 package com.example.simplestockinfo.model.tweetdata
 
 
-import com.google.gson.annotations.SerializedName
-
-data class tweetTimeLine(
+data class TweetTimeLine(
     val `data`: List<Data>,
     val meta: Meta
 )

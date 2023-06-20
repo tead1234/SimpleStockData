@@ -3,12 +3,15 @@ package com.example.simplestockinfo.Service
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.simplestockinfo.model.tweetdata.Data
+import com.example.simplestockinfo.model.tweetdata.TweetTimeLine
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.repository.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class tweetService(private var  repository: Repository) {
+class TweetService(private var  repository: Repository) {
     suspend fun getTweetTimeLine(): MutableLiveData<Pair<String, List<Data>>> {
 //        var items = HashMap<String, String>()
         var tweetLivedata = MutableLiveData<Pair<String, List<Data>>>()
@@ -47,5 +50,20 @@ class tweetService(private var  repository: Repository) {
 
         }
         return tweetLivedata
+    }
+
+    fun getTweet(): Flow<TweetTimeLine> = flow {
+        val response = RetrofitInstance.api_tweet.getTweetTimeLine(5)
+        if(response.isSuccessful) {
+            kotlin.runCatching {
+                response.body()?:throw RuntimeException("invalid JSON File.")
+            }.onSuccess {
+                emit(it)
+            }.onFailure {
+                throw RuntimeException("invalid JSON File.")
+            }
+        } else {
+            throw RuntimeException("response is Failed.")
+        }
     }
 }

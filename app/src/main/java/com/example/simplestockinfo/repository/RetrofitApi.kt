@@ -2,7 +2,7 @@ package com.example.simplestockinfo.repository
 
 import com.example.simplestockinfo.model.ExchangeInfoX
 import com.example.simplestockinfo.model.WTIdata
-import com.example.simplestockinfo.model.tweetdata.tweetTimeLine
+import com.example.simplestockinfo.model.tweetdata.TweetTimeLine
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -11,7 +11,7 @@ import retrofit2.http.*
 
 
 
-interface retrofitApi {
+interface RetrofitApi {
 
     @GET("exchangeJSON")
     suspend fun getDa(
@@ -37,5 +37,5 @@ interface retrofitApi {
     suspend fun getTweetTimeLine(
 //        @Path("id") id: Int,
         @Query("max_results") max_results: Int
-    ): Response<tweetTimeLine>
+    ): Response<TweetTimeLine>
 }

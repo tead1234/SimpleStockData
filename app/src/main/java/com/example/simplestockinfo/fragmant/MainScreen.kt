@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -30,6 +29,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.simplestockinfo.MainViewModel
 import com.example.simplestockinfo.R
+import com.example.simplestockinfo.model.tweetdata.TweetTimeLine
 import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.ui.theme.AppTheme
 import com.example.simplestockinfo.ui.theme.MainViewModelFactory
@@ -46,24 +46,29 @@ fun MainScreen(viewModel: MainViewModel) {
         val wtiData = viewModel.wtiData.observeAsState()
         val exchangeRateData = viewModel.exchangeRateData.observeAsState()
         val nasdaqData = viewModel.nasdaqData.observeAsState()
+        val tweet = viewModel.tweet.observeAsState()
+
         Text(
             text = "Simple Stock",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 10.dp, top = 10.dp)
-                .clickable { viewModel.sendSocketData() },
+                .clickable {
+                    viewModel.sendSocketData()
+                    viewModel.getTwit()
+                },
             textAlign = TextAlign.Left,
             color = MaterialTheme.colorScheme.onBackground,
             fontFamily = FontFamily.Serif,
             fontSize = TextUnit(22f, TextUnitType.Sp)
         )
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp),){
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             item {
-                InfoHead(wtiData.value,exchangeRateData.value,nasdaqData.value)
+                InfoHead(wtiData.value, exchangeRateData.value, nasdaqData.value)
             }
-            items(20){
-                TwitterCard()
+            items(20) {
+                TwitterCard(tweet.value)
             }
         }
 
@@ -101,11 +106,13 @@ class MainScreenFragment : Fragment() {
 }
 
 @Composable
-fun InfoHead(wti:String?,exchangeRate:String?,nasdaq:String?){
-    Row(modifier = Modifier
-        .height(100.dp)
-        .padding(horizontal = 10.dp)
-        .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+fun InfoHead(wti: String?, exchangeRate: String?, nasdaq: String?) {
+    Row(
+        modifier = Modifier
+            .height(100.dp)
+            .padding(horizontal = 10.dp)
+            .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround
+    ) {
         Card(
             modifier = Modifier
                 .weight(1f)
@@ -160,7 +167,7 @@ fun InfoHead(wti:String?,exchangeRate:String?,nasdaq:String?){
 }
 
 @Composable
-fun TwitterCard(){
+fun TwitterCard(tweet: TweetTimeLine?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -169,6 +176,7 @@ fun TwitterCard(){
         shape = RoundedCornerShape(17.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
     ) {
-        Text(text = "Twitter",Modifier.padding(10.dp))
+        Text(text = "Twitter", Modifier.padding(10.dp))
+        Text(text = tweet?.data?.get(0)?.text ?: "Err", Modifier.padding(10.dp))
     }
 }

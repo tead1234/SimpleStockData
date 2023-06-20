@@ -3,14 +3,10 @@ package com.example.simplestockinfo.repository
 import com.example.simplestockinfo.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.internal.UnsafeAllocator.create
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.gson.GsonConverterFactory.create
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.create
 
 
 object RetrofitInstance {
@@ -38,6 +34,7 @@ object RetrofitInstance {
     // 요청문제만 어떻게 해결하면 될거같은데
     private val retrofit_tweet by lazy {
         Retrofit.Builder()
+            .client(buildOkHttpClient())
             .baseUrl(SERVER_URL3)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -53,7 +50,7 @@ object RetrofitInstance {
             .addInterceptor(interceptor)
             .build()
     }
-    val api : retrofitApi by lazy { retrofit.create(retrofitApi::class.java) }
-    val api_wti : retrofitApi by lazy { retrofit_wti.create(retrofitApi::class.java) }
-    val api_tweet : retrofitApi by lazy { retrofit_tweet.create(retrofitApi::class.java) }
+    val api : RetrofitApi by lazy { retrofit.create(RetrofitApi::class.java) }
+    val api_wti : RetrofitApi by lazy { retrofit_wti.create(RetrofitApi::class.java) }
+    val api_tweet : RetrofitApi by lazy { retrofit_tweet.create(RetrofitApi::class.java) }
 }
