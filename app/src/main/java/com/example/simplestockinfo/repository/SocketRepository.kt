@@ -13,7 +13,14 @@ class SocketRepository(private val service: SocketService) {
     fun sendMsg() {
         service.sendMsg()
     }
-
+    fun getFinancialData(): Flow<String> {
+        if (!service.connected) {
+            CoroutineScope(Dispatchers.IO).launch {
+                service.connect()
+            }
+        }
+        return service.onFinancialDataReceived()
+    }
     fun getWtiData(): Flow<String> {
         if (!service.connected) {
             CoroutineScope(Dispatchers.IO).launch {

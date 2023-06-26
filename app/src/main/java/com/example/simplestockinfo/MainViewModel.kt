@@ -26,7 +26,7 @@ class MainViewModel(
     lateinit var newsService: newsService
     lateinit var wti_output: MutableLiveData<Pair<String, Double>>
     var tweetLivedata = MutableLiveData<Pair<String, List<Data>>>()
-
+    var financialData : LiveData<String> = socketRepository.getFinancialData().asLiveData()
     var wtiData: LiveData<String> = socketRepository.getWtiData().asLiveData()
     var exchangeRateData: LiveData<String> = socketRepository.getExchangeRateData().asLiveData()
     var nasdaqData: LiveData<String> = socketRepository.getNasdaqData().asLiveData()
@@ -53,14 +53,10 @@ class MainViewModel(
         return output
     }
 
-    fun getWTI(): MutableLiveData<Pair<String, Double>> {
-        viewModelScope.run {
-            wti_output = MutableLiveData()
-            Log.d("TAG", repository.getWTI().toString())
-            wti_output = repository.getWTI()
-        }
-        return wti_output
-    }
+//    fun getFinancialData(): LiveData<String> {
+//
+//        return financialData
+//    }
 
     fun getTweet(): MutableLiveData<Pair<String, List<Data>>> {
         tweetService = TweetService(repository)

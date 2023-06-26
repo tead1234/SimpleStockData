@@ -68,7 +68,7 @@ class ScreenSlidePageFragment : Fragment() {
                   {
                       WebViewComposable()
                       InfoCard(viewModel)
-                      InfoCard2(mainViewModel = viewModel)
+//                      InfoCard2(mainViewModel = viewModel)
                       Conversation(mainViewModel = viewModel)
                   }
                 Column(modifier = Modifier
@@ -132,26 +132,26 @@ fun InfoCard(mainViewModel: MainViewModel){
 
     }
 }
-@Composable
-fun InfoCard2(mainViewModel: MainViewModel){
-    val wti by mainViewModel.getWTI().observeAsState()
-    wti?.let { it ->
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Color.White)
-            .border(width = 2.dp, color = Color.LightGray, RoundedCornerShape(16.dp))
-            .padding(30.dp)
-            .fillMaxHeight(),
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            Text(text = it.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
-            Spacer(modifier = Modifier.width(30.dp))
-            var wti =  1 / it.second!!
-            Text(text = String.format("%2f", wti))
-        }
-    }
-}
+//@Composable
+//fun InfoCard2(mainViewModel: MainViewModel){
+//    val wti by mainViewModel.getWTI().observeAsState()
+//    wti?.let { it ->
+//        Row(modifier = Modifier
+//            .fillMaxWidth()
+//            .background(color = Color.White)
+//            .border(width = 2.dp, color = Color.LightGray, RoundedCornerShape(16.dp))
+//            .padding(30.dp)
+//            .fillMaxHeight(),
+//            verticalAlignment = Alignment.CenterVertically
+//
+//        ) {
+//            Text(text = it.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
+//            Spacer(modifier = Modifier.width(30.dp))
+//            var wti =  1 / it.second!!
+//            Text(text = String.format("%2f", wti))
+//        }
+//    }
+//}
 
 @Composable
 fun MessageCard(author: String, data: Data) {

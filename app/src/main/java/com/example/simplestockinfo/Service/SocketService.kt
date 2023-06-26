@@ -12,7 +12,7 @@ object SocketService {
 
     private const val TAG = "SocketService"
 
-    private val socket: Socket = IO.socket("http://192.168.0.6:3000")
+    private val socket: Socket = IO.socket("http://localhost:3300")
 
     val connected = socket.connected()
 
@@ -37,7 +37,12 @@ object SocketService {
             }
         }
     }
-
+    fun onFinancialDataReceived() = callbackFlow {
+        socket.on("financial-info") {
+            trySend(it[0].toString())
+        }
+        awaitClose()
+    }
     fun onWtiDataReceived() = callbackFlow {
         socket.on("wti") {
             trySend(it[0].toString())

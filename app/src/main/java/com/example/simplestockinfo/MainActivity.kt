@@ -52,6 +52,7 @@ class MainActivity : FragmentActivity(){
         viewPager = findViewById(R.id.pager)
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
+        Log.d("financial", viewModel.financialData.value.toString());
     //        setContent {
 //            SimpleStockInfoTheme {
 //                Column{
@@ -118,25 +119,25 @@ fun InfoCard(mainViewModel: MainViewModel){
         }
     }
 }
-@Composable
-fun InfoCard2(mainViewModel: MainViewModel){
-    val wti by mainViewModel.getWTI().observeAsState()
-    wti?.let { it ->
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .background(shape = RoundedCornerShape(6.dp), color = Color.Magenta)
-            .padding(30.dp)
-            .height(40.dp),
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            Text(text = it.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
-            Spacer(modifier = Modifier.width(30.dp))
-            var wti =  1 / it.second!!
-            Text(text = String.format("%2f", wti))
-        }
-    }
-}
+//@Composable
+//fun InfoCard2(mainViewModel: MainViewModel){
+//    val wti by mainViewModel.getWTI().observeAsState()
+//    wti?.let { it ->
+//        Row(modifier = Modifier
+//            .fillMaxWidth()
+//            .background(shape = RoundedCornerShape(6.dp), color = Color.Magenta)
+//            .padding(30.dp)
+//            .height(40.dp),
+//            verticalAlignment = Alignment.CenterVertically
+//
+//        ) {
+//            Text(text = it.first, modifier = Modifier.width(200.dp), textAlign = TextAlign.Center)
+//            Spacer(modifier = Modifier.width(30.dp))
+//            var wti =  1 / it.second!!
+//            Text(text = String.format("%2f", wti))
+//        }
+//    }
+//}
 @Composable
 fun MessageCard(author: String, data: Data) {
         Row(modifier = Modifier.padding(all = 8.dp)
