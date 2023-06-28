@@ -3,6 +3,11 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+
 android {
     compileSdk 33
 
@@ -17,6 +22,12 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField "String", "API_KEY", localProperties['API_KEY']
+        buildConfigField "String", "API_SECRET", localProperties['API_SECRET']
+        buildConfigField "String", "ACCESS_KEY", localProperties['ACCESS_KEY']
+        buildConfigField "String", "ACCESS_SECRET", localProperties['ACCESS_SECRET']
+
     }
 
     buildTypes {
@@ -43,6 +54,7 @@ android {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+        exclude 'META-INF/DEPENDENCIES'
     }//
     // databinding
     dataBinding {
@@ -95,4 +107,12 @@ dependencies {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
+
+    implementation("blue.starry:penicillin:6.3.0")
+
+    // Choose your favorite engine from https://ktor.io/clients/http-client/engines.html
+    // The version should match the version of Ktor that Penicillin is using.
+    //implementation("io.ktor:ktor-client-apache:1.6.8")
+    //implementation("io.ktor:ktor-client-cio:1.6.8")
+    implementation "io.ktor:ktor-client-android:2.0.3"
 }

@@ -12,7 +12,7 @@ object SocketService {
 
     private const val TAG = "SocketService"
 
-    private val socket: Socket = IO.socket("http://localhost:3300")
+    private val socket: Socket = IO.socket("http://218.153.199.44:3300")
 
     val connected = socket.connected()
 
@@ -23,6 +23,7 @@ object SocketService {
         return suspendCoroutine {
             socket.once(Socket.EVENT_CONNECT) { _ ->
                 it.resume(Unit)
+                Log.d(TAG, "connect: connected to $socket")
             }
         }
     }
@@ -39,6 +40,7 @@ object SocketService {
     }
     fun onFinancialDataReceived() = callbackFlow {
         socket.on("financial-info") {
+            Log.d(TAG, "onFinancialDataReceived: ${it.joinToString(" ")}")
             trySend(it[0].toString())
         }
         awaitClose()

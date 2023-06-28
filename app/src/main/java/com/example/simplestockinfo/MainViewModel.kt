@@ -4,15 +4,17 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
+import blue.starry.penicillin.endpoints.common.TweetMode
+import blue.starry.penicillin.endpoints.timeline
+import blue.starry.penicillin.endpoints.timeline.userTimelineByScreenName
+import blue.starry.penicillin.models.Status
+import com.example.simplestockinfo.Service.TweetService
 import com.example.simplestockinfo.Service.newsService
 import com.example.simplestockinfo.model.tweetdata.Data
-import com.example.simplestockinfo.repository.Repository
-import com.example.simplestockinfo.Service.TweetService
-import com.example.simplestockinfo.model.tweetdata.TweetTimeLine
 import com.example.simplestockinfo.repository.NewsRepository
+import com.example.simplestockinfo.repository.Repository
 import com.example.simplestockinfo.repository.SocketRepository
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 // factory pattern 으로 usecase를 양산화 시킬것
@@ -26,13 +28,33 @@ class MainViewModel(
     lateinit var newsService: newsService
     lateinit var wti_output: MutableLiveData<Pair<String, Double>>
     var tweetLivedata = MutableLiveData<Pair<String, List<Data>>>()
-    var financialData : LiveData<String> = socketRepository.getFinancialData().asLiveData()
+    var financialData: LiveData<String> = socketRepository.getFinancialData().asLiveData()
     var wtiData: LiveData<String> = socketRepository.getWtiData().asLiveData()
     var exchangeRateData: LiveData<String> = socketRepository.getExchangeRateData().asLiveData()
     var nasdaqData: LiveData<String> = socketRepository.getNasdaqData().asLiveData()
 
-    private val _tweet: MutableLiveData<TweetTimeLine> = MutableLiveData()
-    val tweet: LiveData<TweetTimeLine> get() = _tweet
+    val tweet: LiveData<List<Status>> = flow<List<Status>> {
+        tweetService.client.use { client ->
+            // Retrieve up to 100 tweets from @POTUS.
+            val timeline =
+                try {
+                    client.timeline.userTimelineByScreenName(screenName = "markets", count = null, tweetMode = TweetMode.Default)
+                        .execute()
+                }catch (e:Exception){
+                    emptyList()
+                }
+
+            emit(timeline.toList())
+
+
+//        // The return value of the timeline is `JsonArrayResponse<Status>`. It implements `Iterable<T>`, which allows iterative operations.
+//        timeline.forEach { status ->
+//            // Print unescaped status text. If you want to get the raw html reference characters, you can use `textRaw`.
+//            println(status.text)
+//        }
+        }
+    }.asLiveData()
+
 
     private val TAG = "MainViewModel"
 
@@ -76,19 +98,6 @@ class MainViewModel(
 
     fun sendSocketData() {
         socketRepository.sendMsg()
-    }
-
-    fun getTwit(){
-        viewModelScope.launch {
-            tweetService.getTweet()
-                .catch {
-                    Log.d(TAG, "getTwit: catch")
-                    Log.d(TAG, "getTwit: ${it.toString()}")
-                }.collectLatest {
-                    Log.d(TAG, "getTwit: collect latest")
-                    _tweet.postValue(it)
-                }
-        }
     }
 
 
